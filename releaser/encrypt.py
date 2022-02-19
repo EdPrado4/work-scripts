@@ -13,11 +13,10 @@ from cryptography.fernet import Fernet
 
 try:
     KEY = os.environ.get('DECRYPTION_KEY')
+    FERNET = Fernet(KEY)
 except TypeError:
-    print("You must set the DECRYPTION_KEY env variable")
+    print("You must set a valid DECRYPTION_KEY env variable")
     sys.exit(1)
-
-FERNET = Fernet(KEY)
 
 with open('notes.yaml', 'rb') as file:
     ORIGINAL = file.read()
