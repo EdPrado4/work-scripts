@@ -40,14 +40,14 @@ def get_orgs():
     """
     url = 'https://app.fluidattacks.com/api'
     header = {'authorization': f'Bearer {API_TOKEN}'}
-    query_org = f'''
-      query {{
-        me {{
-          organizations {{
+    query_org = '''
+      query {
+        me {
+          organizations {
             name
-          }}
-        }}
-      }}
+          }
+        }
+      }
     '''
     try:
         all_orgs = []
@@ -87,7 +87,7 @@ def get_groups(org):
         json_data = json.loads(res.text)
         groups = json_data['data']['organizationId']['groups']
         for group in groups:
-            with open('groups.lst', 'a+') as groupfile:
+            with open('groups.lst', 'a+', encoding='utf-8') as groupfile:
                 groupfile.write(group['name']+'\n')
                 groupfile.close()
 

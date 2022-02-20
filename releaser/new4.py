@@ -60,13 +60,13 @@ TOKEN = os.environ.get('INTEGRATES_API_TOKEN')
 EXCLUDED_PRJ = NOTES["excluded"]
 
 try:
-    with open('groups.lst', 'r') as grouplist:
+    with open('groups.lst', 'r', encoding='utf-8') as grouplist:
         GROUPS = []
-        for member in grouplist:
-            member = member.split('\n')
-            member = ''.join(member)
-            if member not in EXCLUDED_PRJ:
-                GROUPS.append(member)
+        for MEMBER in grouplist:
+            MEMBER = MEMBER.split('\n')
+            MEMBER = ''.join(MEMBER)
+            if MEMBER not in EXCLUDED_PRJ:
+                GROUPS.append(MEMBER)
         grouplist.close()
 except FileNotFoundError:
     print("No groups list found in the current directory :(")

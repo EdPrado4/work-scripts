@@ -18,12 +18,13 @@ import requests
 TOKEN = os.environ["INTEGRATES_API_TOKEN"]
 
 try:
-    DRAFTSID = open('to_delete.lst', 'r')
-    DRAFTS = []
-    for ID in DRAFTSID:
-        ID = ID.split('\n')
-        ID = ''.join(ID)
-        DRAFTS.append(ID)
+    with open('to_delete.lst', 'r', encoding="utf-8") as DRAFTSID:
+        DRAFTS = []
+        for ID in DRAFTSID:
+            ID = ID.split('\n')
+            ID = ''.join(ID)
+            DRAFTS.append(ID)
+        DRAFTSID.close()
 except FileNotFoundError:
     print("Could not find the list of drafts to delete :(")
     sys.exit(1)
