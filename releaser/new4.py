@@ -34,9 +34,6 @@ try:
         DECDATA = ''.join(DECDATA)
         NOTES = ast.literal_eval(DECDATA)
         enc_notes.close()
-except InvalidToken:
-    print("The notes seems to be decrypted, careful")
-    sys.exit(1)
 except SyntaxError:
     print("The notes couldn't be retrieved, is it over encrypted?")
     sys.exit(1)
