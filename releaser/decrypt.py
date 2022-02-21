@@ -2,13 +2,13 @@
 
 """
 Script to get the releaser notes on plaintext
+The secrets are printed in the plain-notes.yaml file
+the secrets are not versioned for security
 Author: oprado@fluidattacks.com
 Usage: $python3 decrypt.py
 """
 
-from email.policy import strict
-import sys
-from cryptography.fernet import Fernet, InvalidToken
+from cryptography.fernet import Fernet
 import releaserchecks
 
 KEY = releaserchecks.get_decryption_key(strict=True)
@@ -18,12 +18,9 @@ with open('notes.yaml', 'rb') as enc_file:
     ENCRYPTED = enc_file.read()
     enc_file.close()
 
-try:
-    DECRYPTED = FERNET.decrypt(ENCRYPTED)
-except InvalidToken:
-    print("The file has already been decrypted!")
-    sys.exit(1)
+DECRYPTED = FERNET.decrypt(ENCRYPTED)
 
-with open('notes.yaml', 'wb') as decrypted_file:
+with open('plain-notes.yaml', 'wb') as decrypted_file:
     decrypted_file.write(DECRYPTED)
+    print('plain-notes.yaml file was generated!')
     decrypted_file.close()
