@@ -12,6 +12,7 @@ import sys
 import os
 from json.decoder import JSONDecodeError
 import requests
+import releaserchecks
 
 try:
     GROUP = sys.argv[1]
@@ -19,7 +20,7 @@ except IndexError:
     print("You must provide the Group name")
     sys.exit(1)
 
-TOKEN = os.environ.get("INTEGRATES_API_TOKEN")
+TOKEN = releaserchecks.get_asm_token()
 URL = "https://app.fluidattacks.com/api"
 HEADERS = {"Authorization": f"Bearer {TOKEN}"}
 

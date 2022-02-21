@@ -6,17 +6,13 @@ Author: oprado@fluidattacks.com
 Usage: $python3 decrypt.py
 """
 
-import os
+from email.policy import strict
 import sys
 from cryptography.fernet import Fernet, InvalidToken
+import releaserchecks
 
-try:
-    KEY = os.environ.get('DECRYPTION_KEY')
-    FERNET = Fernet(KEY)
-except TypeError:
-    print("You must set a valid DECRYPTION_KEY env variable")
-    sys.exit(1)
-
+KEY = releaserchecks.get_decryption_key(strict=True)
+FERNET = Fernet(KEY)
 
 with open('notes.yaml', 'rb') as enc_file:
     ENCRYPTED = enc_file.read()

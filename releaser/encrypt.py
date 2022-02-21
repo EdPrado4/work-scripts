@@ -6,17 +6,13 @@ Author: oprado@fluidattacks.com
 Usage: python3 encrypt.py
 """
 
-import os
-import sys
+from email.policy import strict
 from cryptography.fernet import Fernet
+import releaserchecks
 
+KEY = releaserchecks.get_decryption_key(strict=True)
+FERNET = Fernet(KEY)
 
-try:
-    KEY = os.environ.get('DECRYPTION_KEY')
-    FERNET = Fernet(KEY)
-except TypeError:
-    print("You must set a valid DECRYPTION_KEY env variable")
-    sys.exit(1)
 
 with open('notes.yaml', 'rb') as file:
     ORIGINAL = file.read()

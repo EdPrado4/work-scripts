@@ -19,6 +19,7 @@ import concurrent.futures
 from json.decoder import JSONDecodeError as JE
 from requests.exceptions import ConnectionError as CE
 import requests
+import releaserchecks
 
 
 try:
@@ -27,11 +28,7 @@ try:
 except FileNotFoundError:
     print('nice! \N{smirking face} creating a brand new list')
 
-try:
-    API_TOKEN = os.environ.get('INTEGRATES_API_TOKEN')
-except TypeError:
-    print("You must set the INTEGRATES_API_TOKEN env variable")
-    sys.exit(1)
+API_TOKEN = releaserchecks.get_asm_token()
 
 
 def get_orgs():

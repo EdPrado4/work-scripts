@@ -15,8 +15,9 @@ import os
 import sys
 from concurrent.futures import ThreadPoolExecutor
 import requests
+import releaserchecks
 
-TOKEN = os.environ["INTEGRATES_API_TOKEN"]
+TOKEN = releaserchecks.get_asm_token()
 
 try:
     with open('to_reject.lst', 'r', encoding="utf-8") as DRAFTSID:

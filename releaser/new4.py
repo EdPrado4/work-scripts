@@ -11,39 +11,37 @@ Usage: $ python3 new3.py  - Prints the submitted Drafts
 from concurrent.futures import ThreadPoolExecutor
 from json.decoder import JSONDecodeError as JE
 from functools import partial
-import os
+
 import sys
 import json
 import ast
 from requests.exceptions import ConnectionError as CE
 import requests
 from cryptography.fernet import Fernet, InvalidToken
+import releaserchecks
 
 
 # Get the key from environmental variable
 try:
-    KEY = os.environ.get('DECRYPTION_KEY')
+    KEY = releaserchecks.get_decryption_key(strict=False)
     FERNET = Fernet(KEY)
     # Load secrets file
-    with open('notes.yaml', 'rb') as enc_file:
-        ENCRYPTED = enc_file.read()
+    with open('notes.yaml', 'rb') as enc_notes:
+        ENCRYPTED = enc_notes.read()
         DECRYPTED = FERNET.decrypt(ENCRYPTED)
         DECDATA = DECRYPTED.decode("utf-8")
         DECDATA = DECDATA.split('\n')
         DECDATA = ''.join(DECDATA)
         NOTES = ast.literal_eval(DECDATA)
-        enc_file.close()
-except TypeError:
-    print("You must set the DECRYPTION_KEY env variable")
-    sys.exit(1)
+        enc_notes.close()
 except InvalidToken:
     print("The notes seems to be decrypted, careful")
     sys.exit(1)
 except SyntaxError:
     print("The notes couldn't be retrieved, is it over encrypted?")
     sys.exit(1)
-except FileNotFoundError:
-    print("No notes.yaml file was found, notes are not shown")
+except (FileNotFoundError, KeyError):
+    print("No notes.yaml or key was found, notes are not shown")
     NOTES = {'excluded': []}
 
 # Define draft types
@@ -56,7 +54,7 @@ if len(sys.argv) > 1:
 else:
     DRAFT_TYPE = 'SUBMITTED'
 
-TOKEN = os.environ.get('INTEGRATES_API_TOKEN')
+TOKEN = releaserchecks.get_asm_token()
 EXCLUDED_PRJ = NOTES["excluded"]
 
 try:
