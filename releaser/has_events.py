@@ -9,7 +9,6 @@ Usage: hasEvents.py {GROUPNAME}
 
 import json
 import sys
-import os
 from json.decoder import JSONDecodeError
 import requests
 import releaserchecks

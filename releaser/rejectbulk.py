@@ -11,7 +11,6 @@ Usage: python3 rejectbulk.py
 """
 
 import json
-import os
 import sys
 from concurrent.futures import ThreadPoolExecutor
 import requests

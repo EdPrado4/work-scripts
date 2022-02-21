@@ -7,9 +7,9 @@ Author: oprado@fluidattacks.com
 Usage: python3 encrypt.py
 """
 
+import sys
 from cryptography.fernet import Fernet
 import releaserchecks
-import sys
 
 KEY = releaserchecks.get_decryption_key(strict=True)
 FERNET = Fernet(KEY)
