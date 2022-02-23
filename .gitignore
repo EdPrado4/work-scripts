@@ -3,3 +3,4 @@ releaser/to_reject.lst
 releaser/to_delete.lst
 **/__pycache__/
 releaser/plain-notes.yaml
+releaser/drafts.lst

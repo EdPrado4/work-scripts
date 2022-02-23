@@ -20,6 +20,10 @@ jobs:
         pip install pylint
         pip install cryptography
         pip install requests
+        pip install pep8
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py')
+    - name: Analize the code with pep8
+      run: |
+        pep8 $(git ls-files '*.py')
