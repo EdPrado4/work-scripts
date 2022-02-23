@@ -7,10 +7,7 @@ author: oprado@fluidattacks.com
 Usage: hasEvents.py {GROUPNAME}
 '''
 
-import json
 import sys
-from json.decoder import JSONDecodeError
-import requests
 import releaserchecks
 
 try:
@@ -20,33 +17,23 @@ except IndexError:
     sys.exit(1)
 
 TOKEN = releaserchecks.get_asm_token()
-URL = "https://app.fluidattacks.com/api"
-HEADERS = {"Authorization": f"Bearer {TOKEN}"}
 
-
-try:
-    QUERY = f'''
-    query{{
-      group(groupName:"{GROUP}") {{
-        events {{
-          eventStatus
-        }}
-      }}
+QUERY = f'''
+query{{
+    group(groupName:"{GROUP}") {{
+    events {{
+        eventStatus
     }}
-    '''
-    RESP = requests.post(URL, headers=HEADERS, json={'query': QUERY})
-    EVENTDATA = json.loads(RESP.text)
+    }}
+}}
+'''
+EVENTDATA = releaserchecks.request_asm_api(TOKEN, QUERY)
+try:
     for event in EVENTDATA["data"]["group"]["events"]:
         if event["eventStatus"] == "CREATED":
             print(f"{GROUP} has open events \N{loudly crying face}")
             sys.exit(0)
-    print(f"{GROUP} has not any open event \N{smiling face with sunglasses}")
-except ConnectionError:
-    print("Something went wrong while trying to connect")
-    sys.exit(1)
 except TypeError:
-    print("You either don't have access or the group don't exist")
+    print("Invalid Group!")
     sys.exit(1)
-except JSONDecodeError:
-    print("Unknown error")
-    sys.exit(1)
+print(f"{GROUP} has not any open event \N{smiling face with sunglasses}")

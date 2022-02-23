@@ -9,15 +9,10 @@ Usage: $ python3 new3.py  - Prints the submitted Drafts
 """
 
 from concurrent.futures import ThreadPoolExecutor
-from json.decoder import JSONDecodeError as JE
 from functools import partial
-
 import sys
-import json
 import ast
-from requests.exceptions import ConnectionError as CE
-import requests
-from cryptography.fernet import Fernet, InvalidToken
+from cryptography.fernet import Fernet
 import releaserchecks
 
 
@@ -87,28 +82,20 @@ def get_drafts(drafttype, group):
         }}
       }}
     '''
-    headers = {'authorization': f'Bearer {TOKEN}'}
-    url = 'https://app.fluidattacks.com/api'
-    try:
-        res = requests.post(url, headers=headers, json={'query': query})
-        json_data = json.loads(res.text)
-        drafts = json_data['data']['group']['drafts']
-        if drafts:
-            for draft in drafts:
-                if draft['currentState'] == drafttype:
-                    msg = (
-                        f"({draft['groupName']} , {draft['title']}, "
-                        f"{draft['severityScore']}, {draft['id']} , "
-                        f"{draft['analyst']}, {draft['currentState']}) "
-                        f"{draft['reportDate']}"
-                    )
-                    print(msg)
-                    if draft['groupName'] in NOTES:
-                        print(f'^ {NOTES[draft["groupName"]]}')
-    except JE:
-        print(f'something went wrong with {group}')
-    except CE:
-        print('Check your shitty connection')
+    json_data = releaserchecks.request_asm_api(TOKEN, query)
+    drafts = json_data['data']['group']['drafts']
+    if drafts:
+        for draft in drafts:
+            if draft['currentState'] == drafttype:
+                msg = (
+                    f"({draft['groupName']} , {draft['title']}, "
+                    f"{draft['severityScore']}, {draft['id']} , "
+                    f"{draft['analyst']}, {draft['currentState']}) "
+                    f"{draft['reportDate']}"
+                )
+                print(msg)
+                if draft['groupName'] in NOTES:
+                    print(f'^ {NOTES[draft["groupName"]]}')
 
 
 PARTIALGETDRAFTS = partial(get_drafts, DRAFT_TYPE)

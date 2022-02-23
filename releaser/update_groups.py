@@ -35,8 +35,6 @@ def get_orgs():
     """
     Get all the organizations the user has access
     """
-    url = 'https://app.fluidattacks.com/api'
-    header = {'authorization': f'Bearer {API_TOKEN}'}
     query_org = '''
       query {
         me {
@@ -46,17 +44,12 @@ def get_orgs():
         }
       }
     '''
-    try:
-        all_orgs = []
-        res = requests.post(url, headers=header, json={'query': query_org})
-        json_data = json.loads(res.text)
-        orgs = json_data['data']['me']['organizations']
-        for org in orgs:
-            all_orgs.append(org['name'])
-        return all_orgs
-    except JE:
-        print("Something went wrong while retrieving orgs, try again")
-        sys.exit(1)
+    all_orgs = []
+    json_data = releaserchecks.request_asm_api(API_TOKEN, query_org)
+    orgs = json_data['data']['me']['organizations']
+    for org in orgs:
+        all_orgs.append(org['name'])
+    return all_orgs
 
 
 ORGS = get_orgs()
