@@ -34,12 +34,12 @@ def get_decryption_key(strict):
     try:
         key = os.environ["DECRYPTION_KEY"]
         return key
-    except KeyError:
+    except KeyError as key_not_found:
         if strict:
             print("Unable to locate decryption key, quitting ...")
             sys.exit(1)
         else:
-            raise KeyError
+            raise KeyError from key_not_found
 
 
 def request_asm_api(token, query):

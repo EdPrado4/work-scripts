@@ -14,7 +14,6 @@ Usage: $ python3 update_groups.py
 
 import json
 import os
-import sys
 import concurrent.futures
 from json.decoder import JSONDecodeError as JE
 from requests.exceptions import ConnectionError as CE

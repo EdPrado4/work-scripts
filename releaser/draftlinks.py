@@ -57,6 +57,7 @@ def get_org(groupname):
         return org
     except TypeError:
         print("Something went terribly wrong")
+        sys.exit(1)
 
 
 CURRENT_GROUP = get_group(ID)
