@@ -74,7 +74,7 @@ def get_drafts(drafttype, group):
            groupName
            title
            id
-           analyst
+           hacker
            severityScore
            currentState
            reportDate
@@ -90,7 +90,7 @@ def get_drafts(drafttype, group):
                 msg = (
                     f"({draft['groupName']} , {draft['title']}, "
                     f"{draft['severityScore']}, {draft['id']} , "
-                    f"{draft['analyst']}, {draft['currentState']}) "
+                    f"{draft['hacker']}, {draft['currentState']}) "
                     f"{draft['reportDate']}"
                 )
                 print(msg)
